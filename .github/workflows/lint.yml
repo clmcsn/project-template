@@ -1,0 +1,31 @@
+# Copyright 2024 KU Leuven.
+# Licensed under the Apache License, Version 2.0, see LICENSE for details.
+# SPDX-License-Identifier: Apache-2.0
+
+# Run all lint checks
+name: lint
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+
+jobs:
+  # Verible Lint #
+  verible-lint:
+    name: Lint Verilog sources
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Verible linter check
+        uses: chipsalliance/verible-linter-action@main
+        with:
+          paths: |
+            ./rtl
+          #exclude_paths: |
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        fail_on_error: true
+        reviewdog_reporter: github-check
+        extra_args: "--waiver_files tools/lint/waiver.verible"
+        #verible_version: ""
