@@ -33,23 +33,17 @@ Cells model and flavor matters more on the P&R (place and route) stage of the ph
 The synthesis generates a flatten, gate-level verilog file made of cells present in the PDK.
 
 **Human**
-
-**Synthesis tool**
-
 ```verilog
 out = sel ? A : B;
 ```
 
-![Untitled](https://prod-files-secure.s3.us-west-2.amazonaws.com/46f24c3a-c026-4235-a15c-c1db7ed65149/caad461a-1b6f-42aa-91b2-677f2d9f809c/Untitled.png)
-
+**Synthesis tool**
 ```verilog
 NAND2I2 U4A (A, sel, A_p);
 NAND2I2 U4B (B,sel_n,B_p);
 NAND2I2 U4C (sel,sel,sel_n);
 NAND2I2 U4D (A_p,B_p,out);
 ```
-
-![Untitled](https://prod-files-secure.s3.us-west-2.amazonaws.com/46f24c3a-c026-4235-a15c-c1db7ed65149/733a6bfb-cef4-4738-9360-5b32a664cd6b/Untitled.png)
 
 ## Synthesis tools
 
