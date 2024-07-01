@@ -47,7 +47,7 @@ vmap work_lib ${WLIB}
 quietly set HDL_PATH "path_to_your_hdl"
 
 #compiling HDL
-vlog -sv -work ${WLIB} ${HDL_PATH}/your_hdl_files ...'
+vlog -sv -work ${WLIB} ${HDL_PATH}/your_hdl_files ...
 #if you want to define global variables you can do it here as:
 # vlog -sv -work ${WLIB} +define+YOUR_VARIABLE=VALUE1+YOUR_OTHER_VARIABLE=VALUE2
 
