@@ -20,3 +20,21 @@ cat ~/.ssh/id-rsa.pub | ssh r<number>@ssh.esat.kuleuven.be "cat >> ~/.ssh/author
 ```
 
 Extra: what does the last command do?
+
+### ProxyCommand in VS Code
+
+To bypass a server-client access point you can configure a new host in the `.ssh/config` file. This file as its own sintax and you can search for more info online.
+Below an example:
+
+```bash
+Host esat
+    HostName ssh.esat.kuleuven.be
+    User <user>
+
+Host eridani5
+    HostName eridani5.esat.kuleuven.be
+    User <user>
+    ProxyCommand ssh -q -W %h:%p esat
+```
+
+Note: this will work only if the public key is the default `~/.ssh/id_rsa.pub`
