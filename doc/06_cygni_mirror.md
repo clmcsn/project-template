@@ -50,6 +50,8 @@ Crontab will open a new terminal to run these commands; the same env as you woul
 
 ## 4) Setup remote forwarding from cygni to the normal server
 
+Note: this step assumes you know how ssh works, ssh keys and ssh config file. If you don't, be aware the following guide works only if server<->cygni have mutual authentication setup!
+
 Add the following entry to your `~/.ssh/config` file (or ask ChatGPT to provide you with the equivalent set of commands ;))
 
 ```
@@ -64,3 +66,39 @@ Host cygni-fwd
         RemoteForward 2222 localhost:22
 ```
 
+In cygni then add to the `~/.ssh/config`
+
+```
+Host esat-fwd
+        HostName localhost
+        User gsarda
+        Port 2222
+```
+
+## 5) Pin GitHub’s host key (stops “Host key verification failed”)
+
+This step is magic, if `crontab` fails for the error above: remove the known_hosts file and create a new one. 
+Add the github.com to it:
+`ssh-keyscan -H github.com >> ~/.ssh/known_hosts`
+
+You might need to add a dedicated deploy SSH key to allow `crontab` to update the mirror, but I am not sure at this moment in time.
+Update on the topic might follow.
+
+## 6) Setup the repo on cygni
+
+Clone the repo from the mirror:
+
+`git clone esat-fwd:~/path-to-repo/repo.git ~/path-to-clone/repo`
+
+I suggest keeping the paths the same as in the regular server and the cygni (if some setup scripts hardcode absolute paths in generated files 🙃).
+Config the new repo as (ChatGPT suggested):
+
+```
+git remote set-url origin esat-fwd:~/path-to-repo/repo.git
+git fetch --prune --tags
+git branch --set-upstream-to=origin/main main   # adjust if not 'main'
+# optional client-side guard: disable any push URL
+git remote set-url --push origin DISABLED
+```
+
+## 7) Test if the setup works (e.g., pulling a silly commit)
